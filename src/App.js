@@ -8,7 +8,23 @@ function App() {
   const [data, setdata] = useState(question)
   const addItem = () => {
     setdata([...data])
+    localStorage.setItem("items", JSON.stringify([...data]))
   }
+  const deleteAllItems = () => {
+
+    question.splice(0, question.length)
+    setdata([])
+    localStorage.removeItem("items")
+
+  }
+  const deleteOneItem = (items) => {
+    setdata([...items])
+    localStorage.setItem("items", JSON.stringify([...items]))
+    if (items.length === 0) {
+      deleteAllItems()
+    }
+  }
+
   return (
     <div className="font text-center color-body">
       <Container className="p-5">
@@ -19,9 +35,9 @@ function App() {
           </Col>
           <Col sm="8">
             <FormInput data={data} onAdd={addItem} />
-            <QAList data={data} />
+            <QAList data={data} onDelete={deleteOneItem} />
             {
-              data.length ? (<button className="btn-color w-100 my-3">مسح الكل</button>) : null
+              localStorage.getItem("items") != null ? (<button onClick={deleteAllItems} className="btn-color w-100 my-3">مسح الكل</button>) : null
             }
 
           </Col>

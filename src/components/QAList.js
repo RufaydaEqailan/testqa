@@ -1,13 +1,23 @@
 import React from 'react'
 import { Row, Accordion } from 'react-bootstrap';
-const QAList = ({ data }) => {
 
+const QAList = ({ data, onDelete }) => {
+
+    const deleteItem = (ID) => {
+
+        const index = data.findIndex((item) => item.id === ID)
+        data.splice(index, 1)
+        onDelete(data)
+    }
+    const datalocal = JSON.parse(localStorage.getItem("items"))
     return (
         <Row>
             <Accordion>
                 {
-                    data.length ? (
-                        data.map((item, index) => {
+
+
+                    localStorage.getItem("items") != null ? (
+                        datalocal.map((item, index) => {
                             return (
                                 <Accordion.Item eventKey={item.id} key={index}>
                                     <Accordion.Header>
@@ -16,7 +26,7 @@ const QAList = ({ data }) => {
                                     </Accordion.Header>
                                     <Accordion.Body className="text-end">
                                         <div className="px-3 d-inline ">{item.a}</div>
-                                        <button className="btn-color">مسح  </button>
+                                        <button onClick={() => { deleteItem(item.id) }} className="btn-color">مسح  </button>
                                     </Accordion.Body>
                                 </Accordion.Item>
                             )
